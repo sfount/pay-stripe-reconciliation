@@ -1,0 +1,28 @@
+{
+  "name": "pay-stripe-reconciliation",
+  "version": "1.0.0",
+  "description": "Simple utility to fetch payout reconciliation files from Pay Toolbox for a given GOV.UK Pay service.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sfount/pay-stripe-reconciliation.git"
+  },
+  "author": "Steven Fountain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sfount/pay-stripe-reconciliation/issues"
+  },
+  "homepage": "https://github.com/sfount/pay-stripe-reconciliation#readme",
+  "dependencies": {
+    "axios": "0.19.0",
+    "commander": "2.20.0",
+    "dotenv": "8.0.0",
+    "inquirer": "6.5.0",
+    "json2csv": "4.5.2",
+    "jsonfile": "5.0.0",
+    "winston": "3.2.1"
+  }
+}

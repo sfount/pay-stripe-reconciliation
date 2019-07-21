@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+const program = require('commander')
+const inquirer = require('inquirer')
+
+const store = require('../lib/store')
+const logger = require('../lib/logger')
+
+const add = async function add() {
+  const responses = await inquirer.prompt([
+    { type: 'input', name: 'name', message: 'Enter service name' },
+    { type: 'input', name: 'uuid', message: 'Enter service external identifier' },
+    { type: 'input', name: 'gateway_account', message: 'Which gateway account is used by this service?' }
+  ])
+
+  const conf = await store.read()
+  conf.services.push(responses)
+
+  await store.write(conf)
+  logger.info(`Added service ${responses.name}`)
+}
+
+program
+  .version('1.0.0')
+  .command('add')
+  .description('Configure a new service for payout reconciliation.')
+  .action(add)
+
+program.parse(process.argv)
+

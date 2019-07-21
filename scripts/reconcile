@@ -1,0 +1,43 @@
+#!/usr/bin/env node
+const path = require('path')
+const dotenv = require('dotenv').config()
+const program = require('commander')
+const axios = require('axios')
+
+const store = require('../lib/store')
+
+const getPayoutPage = async function getPayoutPage(service) {
+  const url = `${process.env.TOOLBOX_URL}/services/${service.uuid}/gateway_account/${service.gateway_account}/payouts/po_1ExkcLFp6Ezgn8u9S9OZyygS`
+  const page = await axios.get(
+    url,
+    { headers: { Cookie: process.env.COOKIE_AUTH } }
+  )
+
+  const rows = page.data.split('\n')
+  const parsed = rows.map(row => row.split(','))
+
+  return page.data
+}
+
+// only fetches up to 10 at the moment, paginitation coming soon
+const syncAll = async function syncAll() {
+  const { services } = await store.read()
+
+  for (const service of services) {
+    const { latest } = service
+
+    const page = await getPayoutPage(service)
+    console.log(latest)
+  }
+
+  console.log(services)
+}
+
+program
+  .version('1.0.0')
+  .command('all')
+  .description('Sync all configured service\'s payouts')
+  .action(syncAll)
+
+program.parse(process.argv)
+
